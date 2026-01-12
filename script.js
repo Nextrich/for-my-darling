@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const leftPageNumber = document.querySelector('.page-number.left');
     const rightPageNumber = document.querySelector('.page-number.right');
     
-    // Массив с 100 тёплыми словами
+    // Массив с 100 тёплыми словами (ваш массив остаётся без изменений)
     const phrases = [
         "Ты — самое прекрасное, что случилось со мной в жизни.",
         "Каждый день с тобой — это подарок судьбы.",
@@ -117,26 +117,34 @@ document.addEventListener('DOMContentLoaded', function() {
     
     let usedPhrases = [];
     let currentPhraseIndex = -1;
-    let previousPhraseIndex = -1;
     let pageNumber = 1;
     let maxPages = 100;
+    
+    // Проверка мобильного устройства
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     
     // Инициализация
     showRandomPhrase();
     
-    // Открытие книги при клике на сердечко
+    // Добавляем класс no-select для предотвращения выделения
+    document.body.classList.add('no-select');
+    
+    // Открытие книги при клике/тапе на сердечко
     heart.addEventListener('click', function(e) {
+        e.preventDefault();
         e.stopPropagation();
         openBook();
     });
     
-    // Открытие книги при клике на обложку
+    // Открытие книги при клике/тапе на обложку
     document.querySelector('.card-cover').addEventListener('click', function(e) {
+        e.preventDefault();
         openBook();
     });
     
-    // Закрытие книги при клике на открытую книгу
+    // Закрытие книги при клике/тапе на открытую книгу
     document.querySelector('.card-pages').addEventListener('click', function(e) {
+        e.preventDefault();
         closeBook();
         
         // Через задержку открываем с новой фразой
@@ -146,11 +154,35 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 800);
     });
     
+    // Добавляем обработчик touchstart для лучшей реакции на мобильных
+    if (isMobile) {
+        heart.addEventListener('touchstart', function(e) {
+            this.style.transform = 'rotate(45deg) scale(1.05)';
+        });
+        
+        heart.addEventListener('touchend', function(e) {
+            this.style.transform = 'rotate(45deg) scale(1)';
+        });
+    }
+    
     // Функции
     function openBook() {
         valentineCard.classList.add('open');
         heartSound.currentTime = 0;
-        heartSound.play().catch(e => console.log("Автовоспроизведение звука заблокировано"));
+        
+        // На мобильных сначала включаем звук при взаимодействии
+        if (isMobile) {
+            heartSound.muted = false;
+            heartSound.volume = 0.5; // Тише на мобильных
+        }
+        
+        heartSound.play().catch(e => {
+            console.log("Автовоспроизведение звука заблокировано, требуется взаимодействие пользователя");
+            // На мобильных можно показать подсказку
+            if (isMobile) {
+                console.log("Нажмите на сердечко для включения звука");
+            }
+        });
     }
     
     function closeBook() {
@@ -161,10 +193,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // Сохраняем предыдущую фразу на левой странице
         if (currentPhraseIndex !== -1) {
             leftPage.textContent = phrases[currentPhraseIndex];
-            leftPage.style.fontSize = '24px';
+            leftPage.style.fontSize = isMobile ? '20px' : '24px';
             leftPage.style.fontWeight = '500';
             leftPage.style.animation = 'none';
-            leftPage.offsetHeight;
+            void leftPage.offsetHeight; // Перезапуск анимации
             leftPage.style.animation = 'fadeIn 0.5s forwards';
         }
         
@@ -196,17 +228,17 @@ document.addEventListener('DOMContentLoaded', function() {
         // Правая страница - новая фраза
         rightPage.textContent = phrases[currentPhraseIndex];
         rightPage.style.opacity = 1;
-        rightPage.style.fontSize = '26px';
+        rightPage.style.fontSize = isMobile ? '20px' : '26px';
         rightPage.style.fontWeight = '500';
         rightPage.style.animation = 'none';
-        rightPage.offsetHeight;
+        void rightPage.offsetHeight; // Перезапуск анимации
         rightPage.style.animation = 'fadeIn 0.8s forwards';
         
         // Номера страниц
         if (pageNumber === 1) {
             // Первая страница - особый случай
             leftPage.textContent = "Моё признание для самой любимой, милой, прекрасной, лучшей и незабываемой ❤❤❤";
-            leftPage.style.fontSize = '28px';
+            leftPage.style.fontSize = isMobile ? '22px' : '28px';
             leftPage.style.fontWeight = 'bold';
             leftPageNumber.textContent = "стр. ∞";
         } else {
@@ -223,21 +255,28 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function createHeartsBackground() {
         const background = document.querySelector('.hearts-background');
-        const heartsCount = 25; // Увеличиваем количество сердечек для фона всей страницы
+        const heartsCount = isMobile ? 15 : 25; // Меньше сердечек на мобильных
         
         for (let i = 0; i < heartsCount; i++) {
             const heart = document.createElement('div');
             heart.innerHTML = '❤';
+            heart.classList.add('no-select');
             heart.style.position = 'absolute';
             heart.style.left = `${Math.random() * 100}%`;
             heart.style.top = `${Math.random() * 100}%`;
-            heart.style.fontSize = `${Math.random() * 25 + 15}px`;
-            heart.style.color = `rgba(255, 71, 87, ${Math.random() * 0.3 + 0.05})`;
+            heart.style.fontSize = `${Math.random() * (isMobile ? 15 : 25) + 10}px`;
+            heart.style.color = `rgba(255, 71, 87, ${Math.random() * 0.2 + 0.05})`;
             heart.style.animation = `float ${Math.random() * 20 + 10}s infinite linear`;
             heart.style.animationDelay = `${Math.random() * 10}s`;
             heart.style.pointerEvents = 'none';
+            heart.style.zIndex = '-1';
             
             background.appendChild(heart);
         }
+    }
+    
+    // Адаптация шрифтов под мобильные
+    if (isMobile) {
+        document.documentElement.style.fontSize = '14px';
     }
 });
