@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const leftPageNumber = document.querySelector('.page-number.left');
     const rightPageNumber = document.querySelector('.page-number.right');
     
-    // Массив с 100 тёплыми словами (ваш массив остаётся без изменений)
+    // Массив с тёплыми словами
     const phrases = [
         "Ты — самое прекрасное, что случилось со мной в жизни.",
         "Каждый день с тобой — это подарок судьбы.",
@@ -117,34 +117,25 @@ document.addEventListener('DOMContentLoaded', function() {
     
     let usedPhrases = [];
     let currentPhraseIndex = -1;
-    let pageNumber = 1;
-    let maxPages = 100;
-    
-    // Проверка мобильного устройства
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    let previousPhraseIndex = -1;
+    let usedPageNumbers = [];
     
     // Инициализация
     showRandomPhrase();
     
-    // Добавляем класс no-select для предотвращения выделения
-    document.body.classList.add('no-select');
-    
-    // Открытие книги при клике/тапе на сердечко
+    // Открытие книги при клике на сердечко
     heart.addEventListener('click', function(e) {
-        e.preventDefault();
         e.stopPropagation();
         openBook();
     });
     
-    // Открытие книги при клике/тапе на обложку
+    // Открытие книги при клике на обложку
     document.querySelector('.card-cover').addEventListener('click', function(e) {
-        e.preventDefault();
         openBook();
     });
     
-    // Закрытие книги при клике/тапе на открытую книгу
+    // Закрытие книги при клике на открытую книгу
     document.querySelector('.card-pages').addEventListener('click', function(e) {
-        e.preventDefault();
         closeBook();
         
         // Через задержку открываем с новой фразой
@@ -154,35 +145,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 800);
     });
     
-    // Добавляем обработчик touchstart для лучшей реакции на мобильных
-    if (isMobile) {
-        heart.addEventListener('touchstart', function(e) {
-            this.style.transform = 'rotate(45deg) scale(1.05)';
-        });
-        
-        heart.addEventListener('touchend', function(e) {
-            this.style.transform = 'rotate(45deg) scale(1)';
-        });
-    }
-    
     // Функции
     function openBook() {
         valentineCard.classList.add('open');
         heartSound.currentTime = 0;
-        
-        // На мобильных сначала включаем звук при взаимодействии
-        if (isMobile) {
-            heartSound.muted = false;
-            heartSound.volume = 0.5; // Тише на мобильных
-        }
-        
-        heartSound.play().catch(e => {
-            console.log("Автовоспроизведение звука заблокировано, требуется взаимодействие пользователя");
-            // На мобильных можно показать подсказку
-            if (isMobile) {
-                console.log("Нажмите на сердечко для включения звука");
-            }
-        });
+        heartSound.play().catch(e => console.log("Автовоспроизведение звука заблокировано"));
     }
     
     function closeBook() {
@@ -190,19 +157,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function showRandomPhrase() {
-        // Сохраняем предыдущую фразу на левой странице
-        if (currentPhraseIndex !== -1) {
-            leftPage.textContent = phrases[currentPhraseIndex];
-            leftPage.style.fontSize = isMobile ? '20px' : '24px';
-            leftPage.style.fontWeight = '500';
-            leftPage.style.animation = 'none';
-            void leftPage.offsetHeight; // Перезапуск анимации
-            leftPage.style.animation = 'fadeIn 0.5s forwards';
-        }
+        // Сохраняем предыдущую фразу
+        previousPhraseIndex = currentPhraseIndex;
         
         // Если все фразы использованы, начинаем заново
         if (usedPhrases.length >= phrases.length) {
             usedPhrases = [];
+            usedPageNumbers = [];
         }
         
         // Выбираем случайную неиспользованную фразу
@@ -214,69 +175,64 @@ document.addEventListener('DOMContentLoaded', function() {
         usedPhrases.push(randomIndex);
         currentPhraseIndex = randomIndex;
         
-        // Увеличиваем номер страницы
-        pageNumber++;
-        if (pageNumber > maxPages) {
-            pageNumber = 1; // Начинаем с начала после 100 страниц
-        }
+        // Генерируем уникальный случайный номер страницы (от 1 до 99)
+        let randomPageNumber;
+        do {
+            randomPageNumber = Math.floor(Math.random() * 99) + 1;
+        } while (usedPageNumbers.includes(randomPageNumber) && usedPageNumbers.length < 99);
+        
+        usedPageNumbers.push(randomPageNumber);
         
         // Обновляем отображение
         updatePages();
     }
     
     function updatePages() {
+        // Левая страница - всегда заглавное сообщение
+        leftPage.textContent = "Моё признание для самой любимой, милой, прекасной, лучшей и незабываемой ❤❤❤";
+        leftPage.style.opacity = 1;
+        leftPage.style.fontSize = '28px';
+        leftPage.style.fontWeight = 'bold';
+        leftPage.style.animation = 'none';
+        leftPage.offsetHeight;
+        leftPage.style.animation = 'fadeIn 0.5s forwards';
+        
         // Правая страница - новая фраза
         rightPage.textContent = phrases[currentPhraseIndex];
         rightPage.style.opacity = 1;
-        rightPage.style.fontSize = isMobile ? '20px' : '26px';
+        rightPage.style.fontSize = '26px';
         rightPage.style.fontWeight = '500';
         rightPage.style.animation = 'none';
-        void rightPage.offsetHeight; // Перезапуск анимации
+        rightPage.offsetHeight;
         rightPage.style.animation = 'fadeIn 0.8s forwards';
         
         // Номера страниц
-        if (pageNumber === 1) {
-            // Первая страница - особый случай
-            leftPage.textContent = "Моё признание для самой любимой, милой, прекрасной, лучшей и незабываемой ❤❤❤";
-            leftPage.style.fontSize = isMobile ? '22px' : '28px';
-            leftPage.style.fontWeight = 'bold';
-            leftPageNumber.textContent = "стр. ∞";
-        } else {
-            // Для левой страницы - номер на 1 меньше
-            leftPageNumber.textContent = `стр. ${pageNumber - 1}`;
-        }
+        // Для левой страницы всегда "стр. 1"
+        leftPageNumber.textContent = "стр. ∞";
         
         // Для правой страницы - текущий номер
-        rightPageNumber.textContent = `стр. ${pageNumber}`;
+        rightPageNumber.textContent = `стр. ${usedPageNumbers[usedPageNumbers.length - 1]}`;
     }
     
-    // Создаём сердечки на фоне всей страницы
+    // Добавляем сердечки на фон
     createHeartsBackground();
     
     function createHeartsBackground() {
         const background = document.querySelector('.hearts-background');
-        const heartsCount = isMobile ? 15 : 25; // Меньше сердечек на мобильных
+        const heartsCount = 15;
         
         for (let i = 0; i < heartsCount; i++) {
             const heart = document.createElement('div');
             heart.innerHTML = '❤';
-            heart.classList.add('no-select');
             heart.style.position = 'absolute';
             heart.style.left = `${Math.random() * 100}%`;
             heart.style.top = `${Math.random() * 100}%`;
-            heart.style.fontSize = `${Math.random() * (isMobile ? 15 : 25) + 10}px`;
+            heart.style.fontSize = `${Math.random() * 20 + 15}px`;
             heart.style.color = `rgba(255, 71, 87, ${Math.random() * 0.2 + 0.05})`;
             heart.style.animation = `float ${Math.random() * 20 + 10}s infinite linear`;
             heart.style.animationDelay = `${Math.random() * 10}s`;
-            heart.style.pointerEvents = 'none';
-            heart.style.zIndex = '-1';
             
             background.appendChild(heart);
         }
-    }
-    
-    // Адаптация шрифтов под мобильные
-    if (isMobile) {
-        document.documentElement.style.fontSize = '14px';
     }
 });
