@@ -12,8 +12,14 @@ body {
     justify-content: center;
     align-items: center;
     overflow: hidden;
-    padding: 20px;
+    padding: 10px;
     position: relative;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Улучшения для тач-устройств */
+html {
+    touch-action: manipulation;
 }
 
 /* Фоновые сердечки по всей странице */
@@ -55,6 +61,7 @@ body {
     max-width: 700px;
     perspective: 1000px;
     z-index: 1;
+    padding: 10px;
 }
 
 .valentine-card {
@@ -64,8 +71,9 @@ body {
     transform-style: preserve-3d;
     transition: transform 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     cursor: pointer;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-    border-radius: 10px 20px 20px 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    border-radius: 8px 16px 16px 8px;
+    touch-action: manipulation;
 }
 
 .valentine-card.open {
@@ -78,12 +86,12 @@ body {
     width: 100%;
     height: 100%;
     backface-visibility: hidden;
-    border-radius: 10px 20px 20px 10px;
+    border-radius: 8px 16px 16px 8px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 30px;
+    padding: 20px;
     background: linear-gradient(45deg, #ff6b8b, #ff8e53);
     color: white;
     z-index: 2;
@@ -96,7 +104,7 @@ body {
     width: 100%;
     height: 100%;
     backface-visibility: hidden;
-    border-radius: 10px 20px 20px 10px;
+    border-radius: 8px 16px 16px 8px;
     display: flex;
     transform: rotateY(180deg);
     z-index: 1;
@@ -112,7 +120,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 30px;
+    padding: 20px;
     border-right: 1px solid rgba(255, 107, 139, 0.2);
     position: relative;
 }
@@ -126,48 +134,51 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 30px;
+    padding: 20px;
     position: relative;
 }
 
 .heart {
-    width: 150px;
-    height: 150px;
+    width: 120px;
+    height: 120px;
     background: #ff4757;
     position: relative;
     transform: rotate(45deg);
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     animation: heartbeat 1.5s infinite;
-    box-shadow: 0 10px 30px rgba(255, 71, 87, 0.4);
+    box-shadow: 0 5px 20px rgba(255, 71, 87, 0.3);
     cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .heart:before,
 .heart:after {
     content: '';
-    width: 150px;
-    height: 150px;
+    width: 120px;
+    height: 120px;
     background: #ff4757;
     border-radius: 50%;
     position: absolute;
 }
 
 .heart:before {
-    top: -75px;
+    top: -60px;
     left: 0;
 }
 
 .heart:after {
     top: 0;
-    left: -75px;
+    left: -60px;
 }
 
 .instruction {
-    font-size: 24px;
+    font-size: 22px;
     text-align: center;
-    margin-top: 20px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    margin-top: 15px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
     animation: pulse 2s infinite;
+    line-height: 1.3;
+    padding: 0 10px;
 }
 
 .message-container {
@@ -176,34 +187,38 @@ body {
     align-items: center;
     justify-content: center;
     width: 100%;
-    padding: 20px;
+    padding: 15px;
 }
 
 .message {
-    font-size: 26px;
-    line-height: 1.5;
+    font-size: 22px;
+    line-height: 1.4;
     color: #d63384;
-    max-width: 90%;
+    max-width: 95%;
     text-align: center;
     opacity: 0;
     animation: fadeIn 0.8s forwards;
     font-weight: 500;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
 }
 
 .hint {
-    font-size: 18px;
+    font-size: 16px;
     color: #ff6b8b;
-    margin: 15px 0;
+    margin: 10px 0;
     text-align: center;
     font-style: italic;
     opacity: 0.8;
+    padding: 0 10px;
 }
 
 .signature {
     font-family: 'Dancing Script', cursive;
-    font-size: 32px;
+    font-size: 26px;
     color: #ff4757;
-    margin-top: 10px;
+    margin-top: 8px;
     font-weight: bold;
     text-align: center;
 }
@@ -211,28 +226,29 @@ body {
 /* Номер страницы в книжке */
 .page-number {
     position: absolute;
-    bottom: 15px;
-    right: 20px;
-    font-size: 18px;
+    bottom: 10px;
+    right: 15px;
+    font-size: 16px;
     color: #ff4757;
     font-weight: bold;
     opacity: 0.7;
 }
 
 .page-number.left {
-    left: 20px;
+    left: 15px;
     right: auto;
 }
 
 .page-title {
     position: absolute;
-    top: 20px;
+    top: 15px;
     left: 0;
     width: 100%;
     text-align: center;
-    font-size: 20px;
+    font-size: 18px;
     color: #ff6b8b;
     font-family: 'Dancing Script', cursive;
+    padding: 0 10px;
 }
 
 @keyframes heartbeat {
@@ -276,53 +292,198 @@ body {
     }
 }
 
-@media (max-width: 600px) {
+/* Мобильная адаптация */
+@media (max-width: 768px) {
+    body {
+        padding: 5px;
+    }
+    
     .container {
-        max-width: 500px;
+        padding: 5px;
+        max-width: 100%;
     }
     
     .valentine-card {
-        height: 450px;
+        height: 85vh;
+        max-height: 600px;
+        min-height: 400px;
+        border-radius: 6px 12px 12px 6px;
+    }
+    
+    .card-cover {
+        border-radius: 6px 12px 12px 6px;
+        padding: 15px;
+    }
+    
+    .card-pages {
+        border-radius: 6px 12px 12px 6px;
     }
     
     .heart {
-        width: 120px;
-        height: 120px;
+        width: 100px;
+        height: 100px;
+        margin-bottom: 15px;
     }
     
     .heart:before,
     .heart:after {
-        width: 120px;
-        height: 120px;
+        width: 100px;
+        height: 100px;
     }
     
     .heart:before {
-        top: -60px;
+        top: -50px;
     }
     
     .heart:after {
-        left: -60px;
+        left: -50px;
+    }
+    
+    .instruction {
+        font-size: 20px;
+        margin-top: 10px;
+    }
+    
+    .message-container {
+        padding: 10px;
     }
     
     .message {
-        font-size: 22px;
+        font-size: 20px;
+        line-height: 1.3;
+        max-width: 98%;
     }
     
-    .signature {
-        font-size: 28px;
+    .page-left,
+    .page-right {
+        padding: 15px;
     }
     
     .hint {
-        font-size: 16px;
+        font-size: 15px;
+        margin: 8px 0;
+    }
+    
+    .signature {
+        font-size: 22px;
+        margin-top: 5px;
     }
     
     .page-title {
-        font-size: 18px;
-        top: 15px;
+        font-size: 16px;
+        top: 10px;
     }
     
     .page-number {
-        font-size: 16px;
-        bottom: 10px;
+        font-size: 14px;
+        bottom: 8px;
+        right: 10px;
     }
+    
+    .page-number.left {
+        left: 10px;
+    }
+}
+
+/* Для очень маленьких экранов */
+@media (max-width: 480px) {
+    .valentine-card {
+        height: 80vh;
+        max-height: 500px;
+        min-height: 350px;
+    }
+    
+    .heart {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .heart:before,
+    .heart:after {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .heart:before {
+        top: -40px;
+    }
+    
+    .heart:after {
+        left: -40px;
+    }
+    
+    .instruction {
+        font-size: 18px;
+    }
+    
+    .message {
+        font-size: 18px;
+        line-height: 1.2;
+    }
+    
+    .signature {
+        font-size: 20px;
+    }
+    
+    .page-title {
+        font-size: 14px;
+    }
+}
+
+/* Ландшафтная ориентация на мобильных */
+@media (max-height: 500px) and (orientation: landscape) {
+    .valentine-card {
+        height: 90vh;
+        max-height: 350px;
+    }
+    
+    .heart {
+        width: 70px;
+        height: 70px;
+        margin-bottom: 10px;
+    }
+    
+    .heart:before,
+    .heart:after {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .heart:before {
+        top: -35px;
+    }
+    
+    .heart:after {
+        left: -35px;
+    }
+    
+    .instruction {
+        font-size: 16px;
+        margin-top: 5px;
+    }
+    
+    .message {
+        font-size: 16px;
+    }
+    
+    .signature {
+        font-size: 18px;
+    }
+}
+
+/* Улучшения для iOS */
+@supports (-webkit-touch-callout: none) {
+    .heart {
+        animation: heartbeat 1.5s infinite ease-in-out;
+    }
+}
+
+/* Предотвращение выделения текста при тапе */
+.no-select {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
