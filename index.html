@@ -2,13 +2,16 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Книга признаний для самой лучшей</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Caveat:wght@500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#ff6b8b">
 </head>
 <body>
     <div class="container">
@@ -18,20 +21,21 @@
                 <div class="heart"></div>
                 <p class="instruction">Открой книгу любви ❤️</p>
                 <p class="instruction">Нажми на меня</p>
+                <p class="mobile-hint">или нажми на обложку</p>
             </div>
             
             <!-- Внутренние страницы книги -->
             <div class="card-pages">
-                <!-- Левая страница (старое признание) -->
+                <!-- Левая страница -->
                 <div class="page-left">
                     <div class="page-title">Лучшей девушке</div>
                     <div class="message-container">
                         <p class="message">Здесь будут появляться предыдущие признания...</p>
                     </div>
-                    <div class="page-number left">стр. ...</div>
+                    <div class="page-number left">стр. ∞</div>
                 </div>
                 
-                <!-- Правая страница (новое признание) -->
+                <!-- Правая страница -->
                 <div class="page-right">
                     <div class="page-title">во всём мире</div>
                     <div class="message-container">
@@ -44,8 +48,15 @@
             </div>
         </div>
         
-        <div class="hearts-background">
-            <!-- Фон из сердечек -->
+        <div class="hearts-background"></div>
+        
+        <div class="mobile-controls">
+            <button class="btn" id="prevBtn">
+                <i class="fas fa-chevron-left"></i> Назад
+            </button>
+            <button class="btn" id="nextBtn">
+                Далее <i class="fas fa-chevron-right"></i>
+            </button>
         </div>
     </div>
     
