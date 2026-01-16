@@ -2,38 +2,57 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+}
+
+html {
+    height: 100%;
+    overflow-x: hidden;
 }
 
 body {
-    font-family: 'Caveat', cursive;
+    font-family: 'Caveat', cursive, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background: linear-gradient(135deg, #ffafbd, #ffc3a0);
     min-height: 100vh;
+    min-height: -webkit-fill-available;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow-x: hidden;
-    padding: 15px;
-    -webkit-tap-highlight-color: transparent;
+    padding: 10px;
     touch-action: manipulation;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .container {
     position: relative;
     width: 100%;
-    max-width: 700px;
-    perspective: 1000px;
+    max-width: 500px;
+    margin: 0 auto;
+    perspective: 800px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 10px 0;
 }
 
 .valentine-card {
     position: relative;
     width: 100%;
-    height: auto;
+    height: 70vh;
     min-height: 400px;
+    max-height: 600px;
     transform-style: preserve-3d;
-    transition: transform 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     cursor: pointer;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
     border-radius: 8px 16px 16px 8px;
+    margin-bottom: 20px;
+    -webkit-touch-callout: none;
+    user-select: none;
 }
 
 .valentine-card.open {
@@ -51,7 +70,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 25px 20px;
+    padding: 20px;
     background: linear-gradient(45deg, #ff6b8b, #ff8e53);
     color: white;
     z-index: 2;
@@ -71,7 +90,7 @@ body {
     overflow: hidden;
 }
 
-/* Левая страница (старая фраза) */
+/* Левая страница */
 .page-left {
     width: 50%;
     height: 100%;
@@ -80,12 +99,12 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 25px 20px;
+    padding: 20px 15px;
     border-right: 1px solid rgba(255, 107, 139, 0.2);
     position: relative;
 }
 
-/* Правая страница (новая фраза) */
+/* Правая страница */
 .page-right {
     width: 50%;
     height: 100%;
@@ -94,19 +113,19 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 25px 20px;
+    padding: 20px 15px;
     position: relative;
 }
 
 .heart {
-    width: 120px;
-    height: 120px;
+    width: 100px;
+    height: 100px;
     background: #ff4757;
     position: relative;
     transform: rotate(45deg);
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     animation: heartbeat 1.5s infinite;
-    box-shadow: 0 8px 20px rgba(255, 71, 87, 0.3);
+    box-shadow: 0 6px 15px rgba(255, 71, 87, 0.3);
     cursor: pointer;
     touch-action: manipulation;
 }
@@ -114,31 +133,39 @@ body {
 .heart:before,
 .heart:after {
     content: '';
-    width: 120px;
-    height: 120px;
+    width: 100px;
+    height: 100px;
     background: #ff4757;
     border-radius: 50%;
     position: absolute;
 }
 
 .heart:before {
-    top: -60px;
+    top: -50px;
     left: 0;
 }
 
 .heart:after {
     top: 0;
-    left: -60px;
+    left: -50px;
 }
 
 .instruction {
     font-size: 22px;
     text-align: center;
-    margin-top: 15px;
+    margin-top: 10px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
     animation: pulse 2s infinite;
     line-height: 1.3;
     padding: 0 10px;
+}
+
+.mobile-hint {
+    font-size: 16px;
+    text-align: center;
+    margin-top: 5px;
+    opacity: 0.9;
+    font-style: italic;
 }
 
 .message-container {
@@ -147,26 +174,30 @@ body {
     align-items: center;
     justify-content: center;
     width: 100%;
-    padding: 15px;
+    padding: 10px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .message {
-    font-size: 24px;
+    font-size: 20px;
     line-height: 1.4;
     color: #d63384;
-    max-width: 95%;
+    width: 100%;
     text-align: center;
     opacity: 0;
     animation: fadeIn 0.8s forwards;
     font-weight: 500;
     word-wrap: break-word;
     overflow-wrap: break-word;
+    hyphens: auto;
+    padding: 5px;
 }
 
 .hint {
-    font-size: 18px;
+    font-size: 16px;
     color: #ff6b8b;
-    margin: 12px 0;
+    margin: 10px 0;
     text-align: center;
     font-style: italic;
     opacity: 0.8;
@@ -175,36 +206,36 @@ body {
 
 .signature {
     font-family: 'Dancing Script', cursive;
-    font-size: 28px;
+    font-size: 24px;
     color: #ff4757;
-    margin-top: 8px;
+    margin-top: 5px;
     font-weight: bold;
     text-align: center;
 }
 
-/* Номер страницы в книжке */
+/* Номер страницы */
 .page-number {
     position: absolute;
-    bottom: 12px;
-    right: 15px;
-    font-size: 16px;
+    bottom: 10px;
+    right: 12px;
+    font-size: 14px;
     color: #ff4757;
     font-weight: bold;
     opacity: 0.7;
 }
 
 .page-number.left {
-    left: 15px;
+    left: 12px;
     right: auto;
 }
 
 .page-title {
     position: absolute;
-    top: 15px;
+    top: 12px;
     left: 0;
     width: 100%;
     text-align: center;
-    font-size: 18px;
+    font-size: 16px;
     color: #ff6b8b;
     font-family: 'Dancing Script', cursive;
     padding: 0 10px;
@@ -218,27 +249,43 @@ body {
     height: 100%;
     z-index: -1;
     overflow: hidden;
+    pointer-events: none;
 }
 
-.hearts-background:before,
-.hearts-background:after {
-    content: "❤";
-    position: absolute;
-    color: rgba(255, 71, 87, 0.1);
-    font-size: 25px;
-    animation: float 15s infinite linear;
+/* Кнопки управления для мобильных */
+.mobile-controls {
+    display: none;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 500px;
+    margin-top: 15px;
+    padding: 0 10px;
 }
 
-.hearts-background:before {
-    top: 10%;
-    left: 10%;
-    animation-delay: 0s;
+.btn {
+    background: linear-gradient(45deg, #ff6b8b, #ff8e53);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 25px;
+    font-family: 'Caveat', cursive;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s, opacity 0.2s;
+    touch-action: manipulation;
 }
 
-.hearts-background:after {
-    top: 60%;
-    left: 80%;
-    animation-delay: 5s;
+.btn:active {
+    transform: scale(0.95);
+    opacity: 0.9;
+}
+
+.btn i {
+    font-size: 16px;
 }
 
 @keyframes heartbeat {
@@ -282,98 +329,27 @@ body {
     }
 }
 
-/* Мобильная адаптация */
+/* Адаптация для разных размеров экрана */
 @media (max-width: 768px) {
-    body {
-        padding: 10px;
-    }
-    
     .container {
         max-width: 95%;
-        perspective: 800px;
+        padding: 5px 0;
     }
     
     .valentine-card {
+        height: 65vh;
         min-height: 350px;
+        max-height: 500px;
         border-radius: 6px 12px 12px 6px;
     }
     
     .card-cover {
-        padding: 20px 15px;
+        padding: 15px;
         border-radius: 6px 12px 12px 6px;
     }
     
     .card-pages {
         border-radius: 6px 12px 12px 6px;
-    }
-    
-    .heart {
-        width: 100px;
-        height: 100px;
-        margin-bottom: 15px;
-    }
-    
-    .heart:before,
-    .heart:after {
-        width: 100px;
-        height: 100px;
-    }
-    
-    .heart:before {
-        top: -50px;
-    }
-    
-    .heart:after {
-        left: -50px;
-    }
-    
-    .instruction {
-        font-size: 20px;
-        margin-top: 12px;
-    }
-    
-    .message-container {
-        padding: 12px;
-    }
-    
-    .message {
-        font-size: 22px;
-        line-height: 1.3;
-    }
-    
-    .signature {
-        font-size: 24px;
-        margin-top: 6px;
-    }
-    
-    .hint {
-        font-size: 16px;
-        margin: 10px 0;
-    }
-    
-    .page-title {
-        font-size: 16px;
-        top: 12px;
-    }
-    
-    .page-number {
-        font-size: 14px;
-        bottom: 10px;
-        right: 10px;
-    }
-    
-    .page-number.left {
-        left: 10px;
-    }
-}
-
-@media (max-width: 480px) {
-    .container {
-        max-width: 100%;
-    }
-    
-    .valentine-card {
-        min-height: 320px;
     }
     
     .heart {
@@ -396,37 +372,48 @@ body {
     }
     
     .instruction {
-        font-size: 18px;
-    }
-    
-    .message {
         font-size: 20px;
     }
     
-    .signature {
-        font-size: 22px;
+    .message {
+        font-size: 18px;
     }
     
-    .page-left,
-    .page-right {
-        padding: 20px 15px;
-    }
-    
-    .page-title {
-        font-size: 15px;
-        top: 10px;
+    .mobile-controls {
+        display: flex;
     }
 }
 
-/* Для очень маленьких экранов */
-@media (max-width: 360px) {
+@media (max-width: 480px) {
+    body {
+        padding: 5px;
+    }
+    
+    .container {
+        max-width: 100%;
+        padding: 0;
+    }
+    
     .valentine-card {
+        height: 60vh;
         min-height: 300px;
+        max-height: 450px;
+        border-radius: 4px 8px 8px 4px;
+    }
+    
+    .card-cover {
+        padding: 12px;
+        border-radius: 4px 8px 8px 4px;
+    }
+    
+    .card-pages {
+        border-radius: 4px 8px 8px 4px;
     }
     
     .heart {
         width: 80px;
         height: 80px;
+        margin-bottom: 10px;
     }
     
     .heart:before,
@@ -443,40 +430,45 @@ body {
         left: -40px;
     }
     
-    .message {
+    .instruction {
         font-size: 18px;
     }
     
-    .instruction {
+    .message {
+        font-size: 16px;
+        line-height: 1.3;
+    }
+    
+    .page-left,
+    .page-right {
+        padding: 15px 10px;
+    }
+    
+    .signature {
+        font-size: 20px;
+    }
+    
+    .hint {
+        font-size: 14px;
+        margin: 8px 0;
+    }
+    
+    .btn {
+        padding: 10px 15px;
         font-size: 16px;
     }
 }
 
-/* Портретная ориентация */
-@media (max-height: 600px) and (orientation: portrait) {
+@media (max-width: 360px) {
     .valentine-card {
+        height: 55vh;
         min-height: 280px;
-    }
-    
-    body {
-        padding: 5px;
-    }
-}
-
-/* Ландшафтная ориентация для мобильных */
-@media (max-width: 900px) and (orientation: landscape) {
-    .container {
-        max-width: 80%;
-    }
-    
-    .valentine-card {
-        min-height: 250px;
+        max-height: 400px;
     }
     
     .heart {
         width: 70px;
         height: 70px;
-        margin-bottom: 10px;
     }
     
     .heart:before,
@@ -495,14 +487,91 @@ body {
     
     .instruction {
         font-size: 16px;
-        margin-top: 8px;
     }
     
     .message {
-        font-size: 18px;
+        font-size: 15px;
+    }
+}
+
+/* Высокие телефоны */
+@media (min-height: 700px) and (max-width: 768px) {
+    .valentine-card {
+        height: 60vh;
+        max-height: 550px;
+    }
+}
+
+/* Ландшафтная ориентация */
+@media (max-height: 500px) and (orientation: landscape) {
+    body {
+        padding: 5px;
     }
     
-    .signature {
-        font-size: 20px;
+    .container {
+        flex-direction: row;
+        align-items: center;
+        gap: 20px;
+        max-width: 95%;
     }
+    
+    .valentine-card {
+        height: 85vh;
+        min-height: 250px;
+        max-height: 300px;
+        flex: 1;
+        margin-bottom: 0;
+    }
+    
+    .mobile-controls {
+        display: none;
+    }
+    
+    .heart {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .heart:before,
+    .heart:after {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .heart:before {
+        top: -30px;
+    }
+    
+    .heart:after {
+        left: -30px;
+    }
+    
+    .message {
+        font-size: 14px;
+    }
+    
+    .instruction {
+        font-size: 14px;
+    }
+}
+
+/* Поддержка iOS */
+@supports (-webkit-touch-callout: none) {
+    body {
+        min-height: -webkit-fill-available;
+    }
+    
+    .container {
+        min-height: -webkit-fill-available;
+    }
+}
+
+/* Улучшение скролла для iOS */
+.message-container::-webkit-scrollbar {
+    display: none;
+}
+
+.message-container {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
